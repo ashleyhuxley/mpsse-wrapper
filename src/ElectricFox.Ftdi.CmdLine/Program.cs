@@ -1,4 +1,5 @@
-﻿using ElectricFox.Ftdi.Mpsse;
+﻿using ElectricFox.Ftdi.I2C;
+using ElectricFox.Ftdi.Mpsse;
 
 namespace ElectricFox.Ftdi.CmdLine
 {
@@ -6,7 +7,7 @@ namespace ElectricFox.Ftdi.CmdLine
     {
         static void Main(string[] args)
         {
-            Console.WriteLine(MpsseDevice.GetNumberOfDevices(ListDeviceOptions.NumberOnly));
+            Console.WriteLine(I2CDevice.GetNumberOfChannels());
         }
     }
 }
