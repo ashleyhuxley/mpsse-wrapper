@@ -1,4 +1,4 @@
-﻿namespace ElectricFox.Ftdi.Driver
+﻿namespace ElectricFox.Ftdi.Mpsse
 {
     using System.Runtime.InteropServices;
 

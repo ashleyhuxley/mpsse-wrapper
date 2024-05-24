@@ -1,4 +1,4 @@
-﻿using ElectricFox.Ftdi.Driver;
+﻿using ElectricFox.Ftdi.Mpsse;
 
 namespace ElectricFox.Ftdi.CmdLine
 {

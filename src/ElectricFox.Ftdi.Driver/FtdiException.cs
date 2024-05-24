@@ -1,4 +1,4 @@
-﻿namespace ElectricFox.Ftdi.Driver
+﻿namespace ElectricFox.Ftdi.Mpsse
 {
     public class FtdiException : Exception
     {
