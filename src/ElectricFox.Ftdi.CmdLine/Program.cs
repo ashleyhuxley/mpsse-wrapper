@@ -6,7 +6,7 @@ namespace ElectricFox.Ftdi.CmdLine
     {
         static void Main(string[] args)
         {
-            Console.WriteLine(FtdiDriver.GetNumberOfDevices(ListDeviceOptions.NumberOnly));
+            Console.WriteLine(MpsseDevice.GetNumberOfDevices(ListDeviceOptions.NumberOnly));
         }
     }
 }

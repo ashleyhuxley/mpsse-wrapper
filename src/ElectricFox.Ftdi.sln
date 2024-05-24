@@ -5,7 +5,9 @@ VisualStudioVersion = 17.9.34728.123
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ElectricFox.Ftdi.CmdLine", "ElectricFox.Ftdi.CmdLine\ElectricFox.Ftdi.CmdLine.csproj", "{9FEE03C5-C7E4-4195-8A9A-DC77083E4E4B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ElectricFox.Ftdi.Mpsse", "ElectricFox.Ftdi.Driver\ElectricFox.Ftdi.Mpsse.csproj", "{4221D9A5-5150-4509-ABA0-502FABEAF498}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ElectricFox.Ftdi.I2C", "ElectricFox.Ftdi.I2C\ElectricFox.Ftdi.I2C.csproj", "{C62F6322-4A1B-424D-AFD5-1180A6EB0DF4}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ElectricFox.Ftdi.Mpsse", "ElectricFox.Ftdi.Mpsse\ElectricFox.Ftdi.Mpsse.csproj", "{50C47BE3-7267-428C-B975-8F4F20B893EC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +19,14 @@ Global
 		{9FEE03C5-C7E4-4195-8A9A-DC77083E4E4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9FEE03C5-C7E4-4195-8A9A-DC77083E4E4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9FEE03C5-C7E4-4195-8A9A-DC77083E4E4B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4221D9A5-5150-4509-ABA0-502FABEAF498}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4221D9A5-5150-4509-ABA0-502FABEAF498}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4221D9A5-5150-4509-ABA0-502FABEAF498}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4221D9A5-5150-4509-ABA0-502FABEAF498}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C62F6322-4A1B-424D-AFD5-1180A6EB0DF4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C62F6322-4A1B-424D-AFD5-1180A6EB0DF4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C62F6322-4A1B-424D-AFD5-1180A6EB0DF4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C62F6322-4A1B-424D-AFD5-1180A6EB0DF4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{50C47BE3-7267-428C-B975-8F4F20B893EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50C47BE3-7267-428C-B975-8F4F20B893EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50C47BE3-7267-428C-B975-8F4F20B893EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50C47BE3-7267-428C-B975-8F4F20B893EC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

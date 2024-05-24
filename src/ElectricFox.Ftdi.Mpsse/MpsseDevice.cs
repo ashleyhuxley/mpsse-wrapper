@@ -2,7 +2,7 @@
 {
     using System.Runtime.InteropServices;
 
-    public static partial class FtdiDriver
+    public static partial class MpsseDevice
     {
         // ===========================================================================================================================
         // Declarations for device information functions in FTD2XX.dll:
@@ -120,7 +120,7 @@
             var returnCode = (ReturnCode)FT_GetNumberOfDevices(ref result, "/0", (int)options);
             if (returnCode != 0)
             {
-                throw new FtdiException(returnCode);
+                throw new MpsseException(returnCode);
             }
 
             return result;

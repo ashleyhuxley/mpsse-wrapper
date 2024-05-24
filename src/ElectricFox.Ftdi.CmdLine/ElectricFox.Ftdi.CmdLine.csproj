@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ElectricFox.Ftdi.Driver\ElectricFox.Ftdi.Mpsse.csproj" />
+    <ProjectReference Include="..\ElectricFox.Ftdi.Mpsse\ElectricFox.Ftdi.Mpsse.csproj" />
   </ItemGroup>
 
 </Project>
