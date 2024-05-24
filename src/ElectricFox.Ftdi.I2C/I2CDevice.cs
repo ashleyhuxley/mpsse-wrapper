@@ -26,7 +26,7 @@ namespace ElectricFox.Ftdi.I2C
         private static partial int I2C_InitDevice(int handle, int clockDivisor);
         
 
-        public int GetNumberOfDevices()
+        public static int GetNumberOfDevices()
         {
             int numberOfDevices = 0;
             var result = (FtcStatus)I2C_GetNumDevices(ref numberOfDevices);
@@ -39,7 +39,7 @@ namespace ElectricFox.Ftdi.I2C
             return numberOfDevices;
         }
 
-        public I2CDeviceInfo GetDeviceName(int deviceIndex)
+        public static I2CDeviceInfo GetDeviceInfo(int deviceIndex)
         {
             string deviceName = string.Empty;
             int locationId = 0;
@@ -55,7 +55,7 @@ namespace ElectricFox.Ftdi.I2C
             return new I2CDeviceInfo(deviceName, locationId);
         }
 
-        public int OpenDevice()
+        public static int OpenDevice()
         {
             int handle = 0;
 
@@ -69,7 +69,7 @@ namespace ElectricFox.Ftdi.I2C
             return handle;
         }
 
-        public int OpenDevice(I2CDeviceInfo device)
+        public static int OpenDevice(I2CDeviceInfo device)
         {
             int handle = 0;
 
@@ -83,7 +83,7 @@ namespace ElectricFox.Ftdi.I2C
             return handle;
         }
 
-        public void CloseDevice(int handle)
+        public static void CloseDevice(int handle)
         {
             var result = (FtcStatus)I2C_Close(handle);
 
@@ -93,7 +93,7 @@ namespace ElectricFox.Ftdi.I2C
             }
         }
 
-        public void InitDevice(int handle, ushort clockDivisor = 0)
+        public static void InitDevice(int handle, ushort clockDivisor = 0)
         {
             var result = (FtcStatus)I2C_InitDevice(handle, clockDivisor);
 
