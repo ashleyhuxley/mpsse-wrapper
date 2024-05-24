@@ -1,0 +1,42 @@
+﻿namespace ElectricFox.Ftdi.I2C
+{
+    public enum FtcStatus
+    {
+        Success = 0,
+        InvalidHandle = 1,
+        DeviceNotFound = 2,
+        DeviceNotOpened = 3,
+        IoError = 4,
+        InsufficientResources = 5,
+        FailedToCompleteCommand = 20,
+        FailedToSynchronizeDeviceMpsse = 21,
+        InvalidDeviceNameIndex = 22,
+        NullDeviceNameBufferPointer = 23,
+        DeviceNameBufferTooSmall = 24,
+        InvalidDeviceName = 25,
+        InvalidLocationId = 26,
+        DeviceInUse = 27,
+        TooManyDevices = 28,
+        ExternalDeviceNotFound = 29,
+        InvalidClockDivisor = 30,
+        NullControlDataBufferPointer = 31,
+        InvalidNumberControlBytes = 32,
+        ControlAcknowledgeTimeout = 33,
+        NullWriteDataBufferPointer = 34,
+        InvalidNumberDataBytesWrite = 35,
+        DataAcknowledgeTimeout = 36,
+        InvalidWriteType = 37,
+        NumberBytesTooSmallPageWrite = 38,
+        NullPageWriteBufferPointer = 39,
+        NullReadDataBufferPointer = 40,
+        InvalidNumberDataBytesRead = 41,
+        InvalidReadType = 42,
+        NullDllVersionBufferPointer = 43,
+        DllVersionBufferTooSmall = 44,
+        NullLanguageCodeBufferPointer = 45,
+        NullErrorMessageBufferPointer = 46,
+        ErrorMessageBufferTooSmall = 47,
+        InvalidLanguageCode = 48,
+        InvalidStatusCode = 49
+    }
+}
