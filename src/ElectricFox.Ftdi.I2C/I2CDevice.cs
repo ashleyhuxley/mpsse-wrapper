@@ -11,7 +11,7 @@ namespace ElectricFox.Ftdi.I2C
         private static partial int I2C_GetNumDevices(ref int numberOfDevices);
 
         [LibraryImport(@"C:\WINDOWS\System32\FTDI2C.DLL", EntryPoint = "I2C_GetDeviceNameLocID", StringMarshalling = StringMarshalling.Utf16)]
-        private static partial int I2C_GetDeviceNameLocID(int deviceIndex, ref string deviceName, ref int locationId);
+        private static partial int I2C_GetDeviceNameLocID(int deviceIndex, ref string deviceName, int bufferSize, ref int locationId);
 
         [LibraryImport(@"C:\WINDOWS\System32\FTDI2C.DLL", EntryPoint = "I2C_Open", StringMarshalling = StringMarshalling.Utf16)]
         private static partial int I2C_Open(ref int handle);
@@ -43,8 +43,9 @@ namespace ElectricFox.Ftdi.I2C
         {
             string deviceName = string.Empty;
             int locationId = 0;
+            const int BufferSize = 50;
 
-            var result = (FtcStatus)I2C_GetDeviceNameLocID(deviceIndex, ref deviceName, ref locationId);
+            var result = (FtcStatus)I2C_GetDeviceNameLocID(deviceIndex, ref deviceName, BufferSize, ref locationId);
 
             if (result != FtcStatus.Success)
             {
