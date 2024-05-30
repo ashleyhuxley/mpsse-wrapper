@@ -1,4 +1,7 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Formats.Asn1;
+using System.Net;
+using System.Runtime.InteropServices;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace ElectricFox.Ftdi.I2C
 {
@@ -7,84 +10,126 @@ namespace ElectricFox.Ftdi.I2C
     /// </summary>
     public partial class I2CDevice
     {
-        [LibraryImport(@"C:\WINDOWS\System32\FTDI2C.DLL", EntryPoint = "I2C_GetNumDevices", StringMarshalling = StringMarshalling.Utf16)]
-        private static partial int I2C_GetNumDevices(ref int numberOfDevices);
+        [LibraryImport(@"D:\Code\me\mpsse-wrapper\src\libmpsse.dll", EntryPoint = "I2C_GetNumChannels", StringMarshalling = StringMarshalling.Utf16)]
+        private static partial int I2C_GetNumChannels(ref uint numberOfChannels);
 
-        [LibraryImport(@"C:\WINDOWS\System32\FTDI2C.DLL", EntryPoint = "I2C_GetDeviceNameLocID", StringMarshalling = StringMarshalling.Utf16)]
-        private static partial int I2C_GetDeviceNameLocID(int deviceIndex, ref string deviceName, ref int locationId);
+        [DllImport(@"D:\Code\me\mpsse-wrapper\src\libmpsse.dll", EntryPoint = "I2C_GetChannelInfo")]
+        private static extern int I2C_GetChannelInfo(uint index, ref DeviceListInfoNode channelInfo);
 
-        [LibraryImport(@"C:\WINDOWS\System32\FTDI2C.DLL", EntryPoint = "I2C_Open", StringMarshalling = StringMarshalling.Utf16)]
-        private static partial int I2C_Open(ref int handle);
+        [LibraryImport(@"D:\Code\me\mpsse-wrapper\src\libmpsse.dll")]
+        private static partial int I2C_OpenChannel(uint index, ref IntPtr handle);
 
-        [LibraryImport(@"C:\WINDOWS\System32\FTDI2C.DLL", EntryPoint = "I2C_OpenEx", StringMarshalling = StringMarshalling.Utf16)]
-        private static partial int I2C_OpenEx(string deviceName, int locationId, ref int handle);
+        [DllImport(@"D:\Code\me\mpsse-wrapper\src\libmpsse.dll")]
+        private static extern int I2C_InitChannel(IntPtr handle, ref ChannelConfig config);
 
-        [LibraryImport(@"C:\WINDOWS\System32\FTDI2C.DLL", EntryPoint = "I2C_Close", StringMarshalling = StringMarshalling.Utf16)]
-        private static partial int I2C_Close(int handle);
+        [LibraryImport(@"D:\Code\me\mpsse-wrapper\src\libmpsse.dll")]
+        private static partial int I2C_CloseChannel(IntPtr handle);
 
-        [LibraryImport(@"C:\WINDOWS\System32\FTDI2C.DLL", EntryPoint = "I2C_InitDevice", StringMarshalling = StringMarshalling.Utf16)]
-        private static partial int I2C_InitDevice(int handle, int clockDivisor);
-        
+        [DllImport(@"D:\Code\me\mpsse-wrapper\src\libmpsse.dll")]
+        private static extern int I2C_DeviceRead(
+            IntPtr handle,
+            uint deviceAddress,
+            uint sizeToTransfer,
+            byte[] buffer,
+            ref uint sizeTransferred,
+            uint options);
 
-        public int GetNumberOfDevices()
+        [DllImport(@"D:\Code\me\mpsse-wrapper\src\libmpsse.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern int I2C_DeviceWrite(
+            IntPtr handle,
+            uint deviceAddress,
+            uint sizeToTransfer,
+            byte[] buffer,
+            ref uint sizeTransferred,
+            uint options);
+
+        private IntPtr handle;
+
+        protected I2CDevice() { }
+
+        public static uint GetNumberOfChannels()
         {
-            int numberOfDevices = 0;
-            var result = (FtcStatus)I2C_GetNumDevices(ref numberOfDevices);
+            uint channels = 0;
+            var result = (FtcStatus)I2C_GetNumChannels(ref channels);
 
             if (result != FtcStatus.Success)
             {
-                throw new I2CException($"Unable to get number of devices", result);
+                throw new I2CException($"Unable to get number of channels", result);
             }
 
-            return numberOfDevices;
+            return channels;
         }
 
-        public I2CDeviceInfo GetDeviceName(int deviceIndex)
+        public static DeviceListInfoNode GetChannelInfo(uint index)
         {
-            string deviceName = string.Empty;
-            int locationId = 0;
+            var info = new DeviceListInfoNode();
 
-            var result = (FtcStatus)I2C_GetDeviceNameLocID(deviceIndex, ref deviceName, ref locationId);
+            var result = (FtcStatus)I2C_GetChannelInfo(index, ref info);
 
             if (result != FtcStatus.Success)
             {
-                throw new I2CException($"Unable to get device name for index {deviceIndex}", result);
+                throw new I2CException($"Unable to get channel info at device index {index}", result);
             }
 
-            return new I2CDeviceInfo(deviceName, locationId);
+            return info;
         }
 
-        public int OpenDevice()
+        public static I2CDevice Open(uint index)
         {
-            int handle = 0;
+            var newHandle = IntPtr.Zero;
 
-            var result = (FtcStatus)I2C_Open(ref handle);
+            var result = (FtcStatus)I2C_OpenChannel(index, ref newHandle);
 
             if (result != FtcStatus.Success)
             {
-                throw new I2CException($"Unable to open device", result);
+                throw new I2CException($"Unable to open device at index {index}", result);
             }
 
-            return handle;
+            var device = new I2CDevice
+            {
+                handle = newHandle
+            };
+
+            return device;
         }
 
-        public int OpenDevice(I2CDeviceInfo device)
+        public void Initialize(
+            I2CClockRate clockRate,
+            byte latencyTimer,
+            bool disable3PhaseClocking = false,
+            bool enableDriveOnlyZero = false)
         {
-            int handle = 0;
 
-            var result = (FtcStatus)I2C_OpenEx(device.Name, device.Location, ref handle);
+            int options = 0;
+
+            if (disable3PhaseClocking)
+            {
+                options |= 1;
+            }
+
+            if (enableDriveOnlyZero)
+            {
+                options |= (1 << 1);
+            }
+
+            var config = new ChannelConfig
+            {
+                clockRate = clockRate,
+                latencyTimer = latencyTimer,
+                options = options
+            };
+
+            var result = (FtcStatus)I2C_InitChannel(this.handle, ref config);
 
             if (result != FtcStatus.Success)
             {
-                throw new I2CException($"Unable to open device", result);
+                throw new I2CException($"Unable to initialize device", result);
             }
-
-            return handle;
         }
 
-        public void CloseDevice(int handle)
+        public void Close()
         {
-            var result = (FtcStatus)I2C_Close(handle);
+            var result = (FtcStatus)I2C_CloseChannel(handle);
 
             if (result != FtcStatus.Success)
             {
@@ -92,14 +137,46 @@ namespace ElectricFox.Ftdi.I2C
             }
         }
 
-        public void InitDevice(int handle, ushort clockDivisor = 0)
+        public byte[] Read(uint address, uint bytes)
         {
-            var result = (FtcStatus)I2C_InitDevice(handle, clockDivisor);
+            uint bytesTransferred = 0;
+
+            byte[] data = new byte[bytes];
+
+            var result = (FtcStatus)I2C_DeviceRead(
+            this.handle,
+                address,
+                (uint)data.Length,
+                data,
+                ref bytesTransferred,
+            0);
 
             if (result != FtcStatus.Success)
             {
-                throw new I2CException($"Unable to initialize device", result);
+                throw new I2CException($"Unable to write data to device at address {address}", result);
             }
+
+            return data;
+        }
+
+        public uint Write(uint address, byte[] data)
+        {
+            uint bytesTransferred = 0;
+
+            var result = (FtcStatus)I2C_DeviceWrite(
+                this.handle,
+                address, 
+                (uint)data.Length,
+                data, 
+                ref bytesTransferred,
+                0);
+
+            if (result != FtcStatus.Success)
+            {
+                throw new I2CException($"Unable to write data to device at address {address}", result);
+            }
+
+            return bytesTransferred;
         }
     }
 }
