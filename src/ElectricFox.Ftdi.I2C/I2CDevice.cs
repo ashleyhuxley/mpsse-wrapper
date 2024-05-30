@@ -23,7 +23,5 @@ namespace ElectricFox.Ftdi.I2C
 
             return channels;
         }
-        
-
     }
 }
