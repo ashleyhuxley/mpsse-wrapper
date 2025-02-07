@@ -1,11 +1,14 @@
-﻿namespace ElectricFox.Ftdi.I2C
+﻿using System.Runtime.InteropServices;
+
+namespace ElectricFox.Ftdi.I2C
 {
-    internal struct ChannelConfig
+    [StructLayout(LayoutKind.Sequential)]
+    public struct ChannelConfig
     {
-        public I2CClockRate clockRate;
-
-        public byte latencyTimer;
-
-        public int options;
+        public I2C_ClockRate ClockRate;
+        public byte LatencyTimer;
+        public uint Options;
+        public uint Pin;
+        public ushort CurrentPinState;
     }
 }

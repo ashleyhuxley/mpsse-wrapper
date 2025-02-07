@@ -7,6 +7,11 @@ namespace ElectricFox.Ftdi.CmdLine
     {
         static void Main(string[] args)
         {
+
+        }
+
+        static void I2C()
+        {
             const uint htu_addr = 0x40;
             const byte htu_readTemp = 0xE3;
             const byte htu_readHumidity = 0xE3;
@@ -21,8 +26,8 @@ namespace ElectricFox.Ftdi.CmdLine
             Console.WriteLine($"Serial: {info.SerialNumber}");
             Console.WriteLine($"Description: {info.Description}");
 
-            var device = I2CDevice.Open(0);
-            device.Initialize(I2CClockRate.FastMode, 255);
+            var device = I2CDevice.OpenChannel(0);
+            device.Initialize(I2C_ClockRate.I2C_CLOCK_FAST_MODE, 255, new LowerBytePins());
 
             Thread.Sleep(200);
 
@@ -33,7 +38,7 @@ namespace ElectricFox.Ftdi.CmdLine
             catch (I2CException ex)
             {
                 Console.WriteLine(ex.Message);
-                Console.WriteLine(Enum.GetName(typeof(FtcStatus), ex.FtcStatus));
+                Console.WriteLine(Enum.GetName(typeof(FtStatus), ex.FtcStatus));
             }
 
             Thread.Sleep(20);

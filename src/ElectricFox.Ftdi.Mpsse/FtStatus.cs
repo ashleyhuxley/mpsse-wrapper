@@ -1,6 +1,6 @@
-﻿namespace ElectricFox.Ftdi.I2C
+﻿namespace ElectricFox.Ftdi.Mpsse
 {
-    public enum FtcStatus
+    public enum FtStatus
     {
         Success = 0,
         InvalidHandle = 1,

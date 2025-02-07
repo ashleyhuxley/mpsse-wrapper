@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "ElectricFox.Ftdi.Samples.ILI9488": {
+      "commandName": "Project",
+      "commandLineArgs": "D:\\Temp\\Fennec.bmp"
+    }
+  }
+}

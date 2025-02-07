@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace ElectricFox.Ftdi.I2C
+namespace ElectricFox.Ftdi.Mpsse
 {
     [StructLayout(LayoutKind.Sequential)]
     public struct DeviceListInfoNode

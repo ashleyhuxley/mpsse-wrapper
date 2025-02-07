@@ -9,6 +9,16 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ElectricFox.Ftdi.I2C", "Ele
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ElectricFox.Ftdi.Mpsse", "ElectricFox.Ftdi.Mpsse\ElectricFox.Ftdi.Mpsse.csproj", "{50C47BE3-7267-428C-B975-8F4F20B893EC}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ElectrcFox.Ftdi.Tests", "ElectrcFox.Ftdi.Tests\ElectrcFox.Ftdi.Tests.csproj", "{DF0770E3-EEB8-40FB-99B5-78EF805842D5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElectricFox.Ftdi.SPI", "ElectricFox.Ftdi.SPI\ElectricFox.Ftdi.SPI.csproj", "{16718423-7FA5-40E5-B7EC-72899311F772}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{A1993643-3AD3-4A30-AD41-C20A7B9EC632}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{341972F3-11F5-48D0-9970-97E2E571644D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElectricFox.Ftdi.Samples.ILI9488", "ElectricFox.Ftdi.Samples.ILI9488\ElectricFox.Ftdi.Samples.ILI9488.csproj", "{790B06A7-56FE-4028-9F8C-1EB69A99B14C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,9 +37,25 @@ Global
 		{50C47BE3-7267-428C-B975-8F4F20B893EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{50C47BE3-7267-428C-B975-8F4F20B893EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{50C47BE3-7267-428C-B975-8F4F20B893EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DF0770E3-EEB8-40FB-99B5-78EF805842D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF0770E3-EEB8-40FB-99B5-78EF805842D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DF0770E3-EEB8-40FB-99B5-78EF805842D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DF0770E3-EEB8-40FB-99B5-78EF805842D5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{16718423-7FA5-40E5-B7EC-72899311F772}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{16718423-7FA5-40E5-B7EC-72899311F772}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{16718423-7FA5-40E5-B7EC-72899311F772}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{16718423-7FA5-40E5-B7EC-72899311F772}.Release|Any CPU.Build.0 = Release|Any CPU
+		{790B06A7-56FE-4028-9F8C-1EB69A99B14C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{790B06A7-56FE-4028-9F8C-1EB69A99B14C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{790B06A7-56FE-4028-9F8C-1EB69A99B14C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{790B06A7-56FE-4028-9F8C-1EB69A99B14C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{DF0770E3-EEB8-40FB-99B5-78EF805842D5} = {A1993643-3AD3-4A30-AD41-C20A7B9EC632}
+		{790B06A7-56FE-4028-9F8C-1EB69A99B14C} = {341972F3-11F5-48D0-9970-97E2E571644D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EAEAC0FF-3BC6-47C1-A247-1C4B2D30A9CD}

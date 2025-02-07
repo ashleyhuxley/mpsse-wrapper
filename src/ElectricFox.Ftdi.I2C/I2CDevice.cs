@@ -1,16 +1,14 @@
-﻿using System.Formats.Asn1;
-using System.Net;
+﻿using ElectricFox.Ftdi.Mpsse;
 using System.Runtime.InteropServices;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace ElectricFox.Ftdi.I2C
 {
     /// <summary>
     /// See https://www.ftdichip.com/Support/Documents/ProgramGuides/FTCI2CPG11.pdf
     /// </summary>
-    public partial class I2CDevice
+    public partial class I2CDevice : MpsseDevice
     {
-        [LibraryImport(@"D:\Code\me\mpsse-wrapper\src\libmpsse.dll", EntryPoint = "I2C_GetNumChannels", StringMarshalling = StringMarshalling.Utf16)]
+        [LibraryImport(@"D:\Code\me\mpsse-wrapper\src\libmpsse.dll", EntryPoint = "I2C_GetNumChannels")]
         private static partial int I2C_GetNumChannels(ref uint numberOfChannels);
 
         [DllImport(@"D:\Code\me\mpsse-wrapper\src\libmpsse.dll", EntryPoint = "I2C_GetChannelInfo")]
@@ -43,16 +41,14 @@ namespace ElectricFox.Ftdi.I2C
             ref uint sizeTransferred,
             uint options);
 
-        private IntPtr handle;
-
         protected I2CDevice() { }
 
         public static uint GetNumberOfChannels()
         {
             uint channels = 0;
-            var result = (FtcStatus)I2C_GetNumChannels(ref channels);
+            var result = (FtStatus)I2C_GetNumChannels(ref channels);
 
-            if (result != FtcStatus.Success)
+            if (result != FtStatus.Success)
             {
                 throw new I2CException($"Unable to get number of channels", result);
             }
@@ -64,9 +60,9 @@ namespace ElectricFox.Ftdi.I2C
         {
             var info = new DeviceListInfoNode();
 
-            var result = (FtcStatus)I2C_GetChannelInfo(index, ref info);
+            var result = (FtStatus)I2C_GetChannelInfo(index, ref info);
 
-            if (result != FtcStatus.Success)
+            if (result != FtStatus.Success)
             {
                 throw new I2CException($"Unable to get channel info at device index {index}", result);
             }
@@ -74,33 +70,35 @@ namespace ElectricFox.Ftdi.I2C
             return info;
         }
 
-        public static I2CDevice Open(uint index)
+        public static I2CDevice OpenChannel(uint index)
         {
             var newHandle = IntPtr.Zero;
 
-            var result = (FtcStatus)I2C_OpenChannel(index, ref newHandle);
+            var result = (FtStatus)I2C_OpenChannel(index, ref newHandle);
 
-            if (result != FtcStatus.Success)
+            if (result != FtStatus.Success)
             {
                 throw new I2CException($"Unable to open device at index {index}", result);
             }
 
             var device = new I2CDevice
             {
-                handle = newHandle
+                _handle = newHandle
             };
 
             return device;
         }
 
+        // TODO: Don't expose pin here, use a struct instead
         public void Initialize(
-            I2CClockRate clockRate,
+            I2C_ClockRate clockRate,
             byte latencyTimer,
+            LowerBytePins pins,
             bool disable3PhaseClocking = false,
             bool enableDriveOnlyZero = false)
         {
 
-            int options = 0;
+            uint options = 0;
 
             if (disable3PhaseClocking)
             {
@@ -114,14 +112,15 @@ namespace ElectricFox.Ftdi.I2C
 
             var config = new ChannelConfig
             {
-                clockRate = clockRate,
-                latencyTimer = latencyTimer,
-                options = options
+                ClockRate = clockRate,
+                LatencyTimer = latencyTimer,
+                Options = options,
+                Pin = pins.Value
             };
 
-            var result = (FtcStatus)I2C_InitChannel(this.handle, ref config);
+            var result = (FtStatus)I2C_InitChannel(this._handle, ref config);
 
-            if (result != FtcStatus.Success)
+            if (result != FtStatus.Success)
             {
                 throw new I2CException($"Unable to initialize device", result);
             }
@@ -129,9 +128,9 @@ namespace ElectricFox.Ftdi.I2C
 
         public void Close()
         {
-            var result = (FtcStatus)I2C_CloseChannel(handle);
+            var result = (FtStatus)I2C_CloseChannel(_handle);
 
-            if (result != FtcStatus.Success)
+            if (result != FtStatus.Success)
             {
                 throw new I2CException($"Unable to close device", result);
             }
@@ -143,15 +142,15 @@ namespace ElectricFox.Ftdi.I2C
 
             byte[] data = new byte[bytes];
 
-            var result = (FtcStatus)I2C_DeviceRead(
-            this.handle,
+            var result = (FtStatus)I2C_DeviceRead(
+            this._handle,
                 address,
                 (uint)data.Length,
                 data,
                 ref bytesTransferred,
             0);
 
-            if (result != FtcStatus.Success)
+            if (result != FtStatus.Success)
             {
                 throw new I2CException($"Unable to write data to device at address {address}", result);
             }
@@ -163,15 +162,15 @@ namespace ElectricFox.Ftdi.I2C
         {
             uint bytesTransferred = 0;
 
-            var result = (FtcStatus)I2C_DeviceWrite(
-                this.handle,
+            var result = (FtStatus)I2C_DeviceWrite(
+                this._handle,
                 address, 
                 (uint)data.Length,
                 data, 
                 ref bytesTransferred,
                 0);
 
-            if (result != FtcStatus.Success)
+            if (result != FtStatus.Success)
             {
                 throw new I2CException($"Unable to write data to device at address {address}", result);
             }

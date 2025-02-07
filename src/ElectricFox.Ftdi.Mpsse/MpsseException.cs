@@ -6,6 +6,6 @@
 
         public MpsseException(string message) : base(message) { }
 
-        public MpsseException(ReturnCode returnCode) : base($"Return Code: {returnCode}") { }
+        public MpsseException(FtStatus returnCode) : base($"Return Code: {returnCode}") { }
     }
 }
